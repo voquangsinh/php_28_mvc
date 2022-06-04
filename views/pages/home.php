@@ -1,3 +1,3 @@
 <?php
 
-echo "LAP TRINH PHP & MVC";
+echo "CHAO MUNG CAC BAN DEN VOI LAP TRINH PHP & MVC";
