@@ -11,6 +11,7 @@ class PostsController extends BaseController
 
   public function index()
   {
+    echo "DA DEN POSTS CONTROLLER";
     $posts = Post::all();
     $data = array('posts' => $posts);
     $this->render('index', $data);

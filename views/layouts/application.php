@@ -7,6 +7,8 @@
     <title>Demo PHP MVC</title>
   </head>
   <body>
-    <?= @$content ?>
+    <?php
+    echo @$content; 
+    ?>
   </body>
 </html>

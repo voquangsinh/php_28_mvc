@@ -1,13 +1,22 @@
 <?php
+require_once('./configs/app.php');
 
-$controllers = include_once './routes.php';
+$routes = include_once './routes.php';
 
-if (!array_key_exists($controller, $controllers) || !in_array($action, $controllers[$controller])) {
-    $controller = 'pages';
-    $action = 'error';
+$route = array_keys($routes);
+if (!in_array($path, $route) ) {
+    echo '404 PAGE';
+    die;
 }
 
-include_once('controllers/' . ucwords($controller) . 'Controller.php');
-$klass = ucwords($controller) . 'Controller';
-$controller = new $klass;
-$controller->$action();
+$controllers = $routes[$path];
+foreach ($controllers as $method => $controller) {
+
+    list($controller, $action) = explode('@', $controller);
+//$controller == PostsController
+//$action = index
+    include_once('controllers/' . $controller . '.php');
+    $controller = new $controller;
+
+    $controller->$action();
+}
