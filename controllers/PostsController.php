@@ -4,24 +4,23 @@ require_once('models/post.php');
 
 class PostsController extends BaseController
 {
-  function __construct()
-  {
-    $this->folder = 'posts';
-  }
-
   public function index()
   {
-    echo "DA DEN POSTS CONTROLLER";
     $posts = Post::all();
-    $data = array('posts' => $posts);
-    $this->render('index', $data);
+    $this->render('posts.index', ['posts' => $posts]);
   }
 
-  public function showPost()
+  public function create()
   {
-    $post = Post::find($_GET['id']);
-    $data = array('post' => $post);
-    $this->render('show', $data);
+    return $this->render('posts.create');
   }
 
+  public function store()
+  {
+    $result = Post::create($_POST);
+    if ($result) {
+      return redirect('/posts');
+    }
+    return redirect('/posts/create');
+  }
 }

@@ -5,8 +5,6 @@ class Author extends BaseModel
 {
     public $table = 'user_profile';
 
-    public $model = 'Author';
-
     public $fillables = [
         'id',
         'last_name',
@@ -15,6 +13,4 @@ class Author extends BaseModel
         'gender',
         'user_id',
     ];
-
-    
 }

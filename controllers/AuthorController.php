@@ -8,9 +8,7 @@ class AuthorController extends BaseController
 
   public function viewAuthor()
   {
-      
-      $author = new Author();
-      $lists = $author->all();
+      $lists = Author::all();
 
       $this->render('author.show', ['lists' => $lists]);
   }

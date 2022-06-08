@@ -7,7 +7,7 @@ return [
     ],
     '/posts' => [
         'GET' => 'PostsController@index',
-        // 'POST' => 'PostsController@store'
+        'POST' => 'PostsController@store',
     ],
     '/posts/create' => [
         'GET' => 'PostsController@create',

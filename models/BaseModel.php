@@ -1,34 +1,111 @@
 <?php
 
-class BaseModel {
+class BaseModel
+{
 
-    public function all()
+    public function getTable()
     {
-        $list = [];
+        return $this->table ?? strtolower(static::class) . 's';
+    }
+
+    public function getFillables()
+    {
+        return $this->fillables ?? strtolower(static::class);
+    }
+
+    /**
+     * Get all records of model
+     *
+     * @return array
+     */
+    public static function all()
+    {
+        $class =  static::class;
+        $ob = new $class();
         $db = DB::getInstance();
-        $req = $db->query("SELECT * FROM {$this->table}");
+        try {
+            $req = $db->query("SELECT * FROM {$ob->getTable()}");
         
-        foreach ($req->fetchAll() as $item) {
-            $object = new $this->model();
-            foreach ($this->fillables as $fillable) {
-                $object->$fillable = $item[$fillable];
-            }
-            $list[] = $object;
+            return $req->fetchAll(PDO::FETCH_CLASS, static::class);
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
+    }
+
+    /**
+     * Get all records of model
+     *
+     * @return array
+     */
+    public static function find($id = 1)
+    {
+        $class =  static::class;
+        $ob = new $class();
+        $db = DB::getInstance();
+        try {
+            $req = $db->query("SELECT * FROM {$ob->getTable()} WHERE id = {$id}");
+
+            return $req->fetch(PDO::FETCH_CLASS, static::class);
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
+    }
+
+    /**
+     * Get all records of model
+     *
+     * @return array
+     */
+    public static function create($data)
+    {
+        $column = implode(',', array_keys($data));
+        $values = array_values($data);
+        $values = '';
+        foreach (array_values($data) as $value) {
+            $values .= $values ? "," : "";
+            $values .= "'$value'";
         }
 
-        return $list;
+        $class =  static::class;
+        $ob = new $class();
+        $db = DB::getInstance();
+
+        try {
+            $db->query("INSERT INTO {$ob->getTable()} ({$column}) values ({$values});");
+            return true;
+        } catch (\Throwable $th) {
+           return false;
+        }
     }
 
-  static function find($id)
-  {
-    $db = DB::getInstance();
-    $req = $db->prepare('SELECT * FROM posts WHERE id = :id');
-    $req->execute(array('id' => $id));
+    /**
+     * Get all records of model
+     *
+     * @return array
+     */
+    public static function update($data, $condition = '')
+    {
+        $qr = '';
+        foreach ($data as $column => $value) {
+          $qr .= $qr ? "," : "";
+          $qr .= "$column = $value,";
+        }
+  
+        $class =  static::class;
+        $ob = new $class();
+        $db = DB::getInstance();
+        $sql = "UPDATE {$ob->getTable()} SET {$qr}";
 
-    $item = $req->fetch();
-    if (isset($item['id'])) {
-      return new Post($item['id'], $item['title'], $item['content']);
+        if ($condition) {
+          $sql .= " WHERE {$condition};";
+        }
+        try {
+            $db->query($sql);
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
-    return null;
-  }
 }

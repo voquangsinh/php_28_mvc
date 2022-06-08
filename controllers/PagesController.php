@@ -3,11 +3,6 @@ require_once 'controllers/BaseController.php';
 
 class PagesController extends BaseController
 {
-  function __construct()
-  {
-    $this->folder = 'pages';
-  }
-
   public function home()
   {
     $data = array(

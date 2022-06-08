@@ -1,10 +1,10 @@
 <?php
+require_once 'controllers/BaseController.php';
 
 class HomeController extends BaseController {
 
     public function index()
     {
-        var_dump(123);
-        die;
+        $this->render('pages.home');
     }
 }
