@@ -7,7 +7,7 @@ class PostsController extends BaseController
   public function index()
   {
     $posts = Post::all();
-    $this->render('posts.index', ['posts' => $posts]);
+    return $this->render('posts.index', ['posts' => $posts]);
   }
 
   public function create()
